@@ -56,3 +56,61 @@ gcc src\main.c -o projet_oceandepths.exe
 	•	Le fichier Makefile n’est pas versionné (ajouté au .gitignore) pour permettre à chacun d’avoir sa propre configuration locale.
 	•	Le fichier Makefile.example est le modèle officiel partagé du projet.
 	•	Si vous rencontrez un problème de compilation, comparez votre Makefile au modèle.
+
+---
+
+##  Gestion des branches Git
+
+Pour assurer un développement organisé et collaboratif, le projet OceanDepths utilise une structure de branches inspirée du workflow **Git Flow**.
+
+###  Structure des branches
+
+| Branche | Rôle | Accès |
+|----------|------|--------|
+| **main** | Contient la version stable du jeu (toujours prête à livrer) | Lecture / Merge final uniquement |
+| **develop** | Branche principale de développement, où toutes les nouvelles fonctionnalités sont intégrées et testées avant d’être fusionnées dans `main` | Écriture (développeurs) |
+| **feature/*** | Branches temporaires pour le développement d’une fonctionnalité spécifique (ex : `feature/combat-system`) | Écriture (auteur de la feature) |
+
+---
+
+### Création de la branche `develop`
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b develop
+git push -u origin develop
+
+---
+
+## Workflow Git – Récapitulatif rapide
+
+> Voici la méthode standard utilisée par l’équipe pour collaborer proprement sur le projet OceanDepths.
+
+1. Créer une nouvelle branche à partir de `develop` :  
+   ```bash
+   git checkout develop
+   git checkout -b feature/nom-de-la-feature
+
+2. Coder, tester, puis valider les changements :
+
+git add .
+git commit -m "Ajout de la fonctionnalité : nom-de-la-feature"
+git push -u origin feature/nom-de-la-feature
+
+3. Fusionner la feature terminée dans develop :
+
+git checkout develop
+git merge feature/nom-de-la-feature
+git push origin develop
+
+4. Quand la version est stable, fusionner develop → main :
+
+git checkout main
+git merge develop
+git push origin main
+
+5.	Nettoyer les branches terminées :
+
+git branch -d feature/nom-de-la-feature
+git push origin --delete feature/nom-de-la-feature
