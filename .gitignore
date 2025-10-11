@@ -1,0 +1,58 @@
+# ===============================
+# Projet OceanDepths - .gitignore
+# Compatible macOS / Windows / Linux
+# ===============================
+
+# --- Binaires et exécutables ---
+projet_oceandepths
+projet_oceandepths.exe
+*.out
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.lib
+
+# --- Dossiers de debug (macOS) ---
+*.dSYM/
+*.DS_Store
+
+# --- Fichiers temporaires ---
+*.swp
+*~
+*.log
+*.tmp
+*.bak
+*.lock
+
+# --- Dossiers de build ---
+build/
+dist/
+bin/
+out/
+
+# --- Makefiles locaux (non versionnés) ---
+Makefile
+
+# --- Environnements et IDE ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- Sauvegardes de compilation ---
+*.old
+*.orig
+
+# --- Fichiers de sauvegarde utilisateur ---
+*.save
+*.backup
+*.zip
+*.tar
+*.gz
+
+# --- Système ---
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+Icon?
