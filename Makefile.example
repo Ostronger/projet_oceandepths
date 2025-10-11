@@ -9,7 +9,7 @@
 CC = gcc
 
 # Options de compilation
-CFLAGS = -Wall -Wextra -std=c11 -g
+CFLAGS = -Wall -Wextra -std=c11 -g -Iinclude
 
 # Nom de l'exécutable
 TARGET = projet_oceandepths
