@@ -22,8 +22,16 @@ typedef struct {
     int est_vivant;
 } CreatureMarine; // structure représentant une créature marine
 
-// Prototype de la fonction d'initialisation (permet de l'utiliser dans d'autres fichiers)
+// Prototype de la fonction pour initialiser le générateur de nombres aléatoires une seule fois
 void seed_rng_once(void);
+// Prototype de la fonction d'initialisation (permet de l'utiliser dans d'autres fichiers)
 void init_creature(CreatureMarine *creature, TypeCreature typeCreature, int profondeur);
+// Prototype de la fonction de génération de groupe de créatures
+int generate_group(CreatureMarine group[], int max, int profondeur);
+
+void print_creature(const CreatureMarine *creature);
+void print_group(const CreatureMarine group[], int count);
+
+const char* creature_symbol(const CreatureMarine *c);
 
 #endif

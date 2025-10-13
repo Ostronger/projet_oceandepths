@@ -20,6 +20,19 @@
 - `src/main.c` : test simple (génère 1 créature et l’affiche).
 - `Makefile` : compile avec `-Iinclude`.
 
+Module creatures — Fiche technique
+
+Rôle
+
+Gérer la création et l’affichage des créatures marines (Kraken, Requin), avec des statistiques qui évoluent en fonction de la profondeur.
+
+Fichiers
+	•	include/creatures.h : types + prototypes publics
+	•	src/creatures.c : implémentations
+	•	src/main.c : exemple d’utilisation / tests
+
+Structures & types
+
 ## Captures d'écran
 [Insérer vos captures montrant le jeu en action,
 pour éviter un malheureux "effet démo" le jour de la soutenance]
