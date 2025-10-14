@@ -6,6 +6,9 @@
 typedef enum {
     KRAKEN,
     REQUIN,
+    MEDUSE,
+    POISSON_EPEE,
+    CRABE_GEANT,
     TYPE_CREATURE_RANDOM = -1 // pour choisir aléatoirement le type de créature
 } TypeCreature; // types de créatures possibles
 

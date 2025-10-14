@@ -65,27 +65,52 @@ static void print_depth_map(const Map *carte)
 // 🔹 Affiche la carte graphique finale (🌊 / 🐙 / 🦈)
 static void print_icon_map(const Map *carte)
 {
-    printf("\n=== CARTE GRAPHIQUE (1 créature max par case) ===\n\n");
+    printf("\n🌊=== CARTOGRAPHIE OCÉANIQUE ===🌊\n\n");
 
-    // En-tête colonnes
-    printf("      ");
-    for (int x = 0; x < MAP_WIDTH; x++)
-        printf("  x=%d ", x);
-    printf("\n");
+    int col_width = 4; // largeur d'une cellule
+    int width = MAP_WIDTH;
+    int height = MAP_HEIGHT;
 
-    // Chaque ligne = profondeur constante
-    for (int y = 0; y < MAP_HEIGHT; y++)
+    // ┌──┬──┐  ligne du haut
+    printf("    ┌");
+    for (int x = 0; x < width; x++) {
+        for (int i = 0; i < col_width; i++) printf("─");
+        if (x < width - 1) printf("┬");
+    }
+    printf("┐\n");
+
+    // Lignes avec contenu
+    for (int y = 0; y < height; y++)
     {
         int profondeur = map_get_depth(carte, 0, y);
-        printf("y=%-3d ", y);
-        for (int x = 0; x < MAP_WIDTH; x++)
-        {
-            printf("  %s  ", icons[y][x]);
+        printf("y=%-2d│", y);
+
+        for (int x = 0; x < width; x++)
+            printf(" %-4s │", icons[y][x]); // icône de la créature ou eau
+
+        printf(" %3dm\n", profondeur);
+
+        // Ligne de séparation entre les rangées
+        if (y < height - 1) {
+            printf("    ├");
+            for (int x = 0; x < width; x++) {
+                for (int i = 0; i < col_width; i++) printf("─");
+                if (x < width - 1) printf("┼");
+            }
+            printf("┤\n");
         }
-        printf(" | %3dm\n", profondeur);
     }
 
-    printf("\nLégende : 🐙 Kraken, 🦈 Requin, %s Eau\n", MAP_ICON_WATER);
+    // └──┴──┘  ligne du bas
+    printf("    └");
+    for (int x = 0; x < width; x++) {
+        for (int i = 0; i < col_width; i++) printf("─");
+        if (x < width - 1) printf("┴");
+    }
+    printf("┘\n");
+
+    // Légende
+    printf("\nLégende : 🐙 Kraken | 🦈 Requin | 🪼 Méduse | 🐟 Poisson-Épée | 🦀 Crabe Géant | %s Eau\n", MAP_ICON_WATER);
 }
 
 
@@ -95,17 +120,17 @@ static void print_icon_map(const Map *carte)
 // =======================================================
 int main(void)
 {
-    seed_rng_once();
+    seed_rng_once(); // Initialise le générateur de nombres aléatoires une seule fois
 
-    // 1️⃣ Initialiser et afficher la carte des profondeurs
+    // 1️ Initialiser et afficher la carte des profondeurs
     Map carte;
     map_init(&carte);
     print_depth_map(&carte);
 
-    // 2️⃣ Préparer les structures d’occupation et d’icônes
+    // 2️ Préparer les structures d’occupation et d’icônes
     clear_occupied_and_icons();
 
-    // 3️⃣ Pour CHAQUE ligne : générer un groupe de créatures et les placer
+    // 3️ Pour CHAQUE ligne : générer un groupe de créatures et les placer
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         int profondeur = map_get_depth(&carte, 0, y);

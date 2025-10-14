@@ -13,7 +13,7 @@ typedef struct {
 } Cell;
 
 typedef struct {
-    Cell grille [MAP_HEIGHT][MAP_WIDTH];
+    Cell grille [MAP_HEIGHT][MAP_WIDTH]; // grille de cellules
 } Map;
 
 void map_init(Map *map); // initialise la carte avec des profondeurs aléatoires

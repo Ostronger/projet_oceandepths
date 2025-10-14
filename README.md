@@ -75,7 +75,7 @@ Pour assurer un développement organisé et collaboratif, le projet OceanDepths 
 
 ### Création de la branche `develop`
 
-```bash
+`bash
 git checkout main
 git pull origin main
 git checkout -b develop
@@ -114,3 +114,19 @@ git push origin main
 
 git branch -d feature/nom-de-la-feature
 git push origin --delete feature/nom-de-la-feature
+
+## Structure du code
+
+	•	creatures.h / creatures.c → gestion et génération des créatures
+	•	map.h / map.c → carte océanique et profondeurs
+	•	main.c → affichage, répartition des créatures et carte graphique
+
+
+## Fonction importante 
+
+### Fonction seed_rng_once()
+
+Cette fonction initialise le générateur de nombres aléatoires une seule fois dans tout le programme.
+Elle encapsule la commande standard srand(time(NULL)) et utilise une variable static pour éviter de réinitialiser le hasard à chaque appel.
+
+ Objectif : garantir un vrai comportement aléatoire tout en gardant la cohérence du tirage.
