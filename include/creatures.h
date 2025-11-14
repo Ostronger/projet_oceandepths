@@ -1,7 +1,7 @@
-#ifndef CREATURES_H      // empêche d'inclure deux fois le fichier
+﻿#ifndef CREATURES_H      // emp�che d'inclure deux fois le fichier
 #define CREATURES_H
 
-#define CREATURES_MAX 4 // nombre maximum de crétaure générées en m^me temps
+#define CREATURES_MAX 4 // nombre maximum de cr�taure g�n�r�es en m^me temps
 
 typedef enum {
     KRAKEN,
@@ -9,12 +9,13 @@ typedef enum {
     MEDUSE,
     POISSON_EPEE,
     CRABE_GEANT,
-    TYPE_CREATURE_RANDOM = -1 // pour choisir aléatoirement le type de créature
-} TypeCreature; // types de créatures possibles
+    TYPE_CREATURE_RANDOM = -1 // pour choisir al�atoirement le type de cr�ature
+} TypeCreature; // types de cr�atures possibles
 
 typedef struct {
-    int id;                         
-    char nom[30];                   
+    int id;
+    TypeCreature type;
+    char nom[30];
     int points_de_vie_max;          
     int points_de_vie_actuels;      
     int attaque_minimale;           
@@ -23,6 +24,8 @@ typedef struct {
     int vitesse;
     char effet_special[20];
     int est_vivant;
+    int niveau;
+    int tours_pacifies;
 } CreatureMarine; // structure représentant une créature marine
 
 // Prototype de la fonction pour initialiser le générateur de nombres aléatoires une seule fois
@@ -38,3 +41,4 @@ void print_group(const CreatureMarine group[], int count);
 const char* creature_symbol(const CreatureMarine *c);
 
 #endif
+

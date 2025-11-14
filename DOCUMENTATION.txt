@@ -1,0 +1,66 @@
+# OceanDepths – Documentation technique et guide joueur
+
+## Modules (.c / .h)
+
+### creatures.c / creatures.h
+Gestion de toutes les créatures marines : génération aléatoire selon la profondeur, attribution des statistiques (PV, ATK, DEF, vitesse, effets spéciaux) et fonctions utilitaires (`generate_group`, `print_group`, `creature_symbol`). 
+Chaque palier de profondeur ajuste les types générés et les stats. Le header expose `CreatureMarine`, `TypeCreature` et les prototypes utilisés dans tout le projet.
+
+### joueur.c / joueur.h
+Module du plongeur : structure `Plongeur`, gestion des ressources (vie, oxygène, fatigue, perles), progression (XP/niveau), coûts d'actions, cooldowns de compétences et alertes. 
+Centralise aussi la logique de suffocation et de recalcul de stats en fonction de l’équipement.
+
+### inventaire.c / inventaire.h
+Inventaire et équipements : 8 slots d’objets, gestion des harpons/combinaisons, effets sur les stats du plongeur et application des consommables (capsules O₂, trousses, etc.). 
+Fournit l’interface d’affichage et les fonctions pour équiper/consommer depuis les combats ou les menus.
+
+### combat.c / combat.h
+Boucle de combat 1vN : phases joueur/ennemis, calculs de dégâts, fatigue, consommation d’oxygène, compétences spéciales, ordre d’attaque et effets uniques des créatures (paralysie, frenzy, carapace…). 
+Retourne un `ResultatCombat` (victoire/défaite/fuite) exploité par `main.c`.
+
+### map.c / map.h
+Cartographie textuelle : initialisation d’une grille verticale (0 à 500 m), affichage des lignes avec progression du plongeur et symboles des créatures toujours vivantes.
+
+### recompenses.c / recompenses.h
+Distribution post-combat : calcul des perles et de l’XP selon la profondeur/type, choix d’un bonus (objet, upgrade harpon/combi) et intégration avec l’inventaire. 
+Ajoute aussi des gains fixes (ex. combinaison renforcée offerte après la ligne 1).
+
+### sauvegarde.c / sauvegarde.h
+Système de sauvegarde/chargement (format texte V3) : enregistre Plongeur, inventaire, équipements, ligne actuelle et zones sécurisées dans `saves/partie.save`. 
+Le chargement restaure l’aventure ou réinitialise tout lors d’une nouvelle expédition.
+
+### ui.c / ui.h
+Interface console : barres de PV/O₂/fatigue, menus génériques, lecture sécurisée des entrées utilisateur (`ui_lire_choix`). 
+Utilisé par tous les modules interactifs.
+
+### main.c
+Point d'entrée : initialisation du jeu, menu principal, navigation verticale, intégration de la carte, des combats, de la boutique de surface et de la sauvegarde. Ordonne le déroulement complet d’une expédition jusqu’à la victoire contre le Léviathan.
+
+## Règles et déroulement du jeu
+
+1. **Ressources du plongeur** : Vie, Oxygène (diminue à chaque action et tour), Fatigue (limite d’actions par tour), Perles (monnaie), XP/Niveau (augmente stats et déverrouille compétences plus fortes).
+2. **Exploration verticale** : La carte comporte 6 lignes (surface à -500 m). On descend/monte via le menu “Changer de profondeur”, sous réserve d’avoir la combinaison requise. Chaque zone peut générer 1 à 4 créatures; une fois sécurisée, elle reste vide.
+3. **Combats 1vN** : Chaque tour se déroule ainsi :
+   - Affichage de l’état du plongeur.
+   - Actions du joueur (Attaquer, Compétences, Inventaire) limitées par la fatigue.
+   - Consommation passive d’O₂, alerte critique si ≤10, suffocation si 0.
+   - Attaques des créatures par ordre de vitesse (avec effets spéciaux).
+   - Récupération de fatigue et décrément des cooldowns.
+4. **Compétences** : Apnée prolongée (restaure O₂), Décharge électrique (zone), Communication marine (pacifie), Tourbillon (ralentit). Chaque compétence consomme de l’oxygène et possède un cooldown.
+5. **Inventaire et équipements** : Jusqu’à 8 objets. Harpons augmentent l’ATK, combinaisons renforcent la DEF et modulent la consommation O₂. Les objets (capsules, trousses, stimulants, antidotes) peuvent être utilisés en combat ou hors combat.
+6. **Surface** : Permet repos complet, boutique (objets et upgrades), sauvegarde. On revient ensuite à la profondeur précédente pour continuer l’exploration.
+7. **Récompenses** : Après chaque victoire, on reçoit perles, XP et un bonus optionnel. Les perles servent à acheter/équiper du matériel plus profond.
+8. **Sauvegarde** : Disponible uniquement en surface. Charger une partie restaure le plongeur, son inventaire, la ligne actuelle et les zones déjà sécurisées.
+9. **Victoire** : Atteindre la ligne 5 (500 m), vaincre le Léviathan (boss final personnalisé) et sécuriser la zone. Le jeu affiche un message de conquête des abysses.
+
+## Instructions rapides
+
+- Sous Windows/PowerShell, assurez-vous d’abord de forcer la console en UTF-8 (compatibilité emojis):
+  1. `chcp 65001`
+  2. `$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)`
+
+- Compilation : `gcc src/*.c -Iinclude -std=c11 -Wall -Wextra -g -o projet_oceandepths`
+- Exécution : `./projet_oceandepths` 
+- Sauvegarde : accédez au menu Surface et choisissez “Sauvegarder”.
+- Déplacement : menu “Changer de profondeur”, pensez à vérifier l’équipement nécessaire.
+- Conseils : surveillez l’oxygène (capsules vitales), utilisez les compétences quand l’O₂ est suffisant, et investissez vos perles dans les combinaisons avant de descendre.

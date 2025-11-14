@@ -51,6 +51,9 @@ Makefile
 *.tar
 *.gz
 
+# --- Fichiers personnels (non versionnés) ---
+PLANO_DE_ACAO.txt
+
 # --- Système ---
 Thumbs.db
 Desktop.ini
