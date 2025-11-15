@@ -45,7 +45,7 @@ int map_get_depth(const Map *map, int x, int y)
 
 void map_print(const Map *map)
 {
-    printf("=== CARTOGRAPHIE OCÉANIQUE ===\n\n");
+    printf("--- CARTOGRAPHIE OCÉANIQUE ---\n\n");
 
     for (int y = 0; y < MAP_HEIGHT; y++)
     {

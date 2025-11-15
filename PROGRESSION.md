@@ -33,6 +33,48 @@ Fichiers
 
 Structures & types
 
+### Fonction main() 
+
+Le ficchier `main.c` sert de banc de test pour la génération et l’affichage d’une créature marine.
+- Étape 1 : Initialise le générateur de nombres aléatoires avec `seed_rng_once()`.
+- Étape 2 : Crréation et affichage de la carte :
+    ```c
+    Map carte;
+    map_init(&carte);
+    print_depth_map(&carte);
+    ```
+    - map_init() crée une grille océanique avec des profondeurs linéaires de 0 à 500 m.
+    - print_depth_map() affiche cette carte pour visualiser les niveaux de profondeur.
+
+- Étape 3 : Réinitialisation de la carte visuelle
+    ```c
+    clear_occupied_and_icons();
+    ```
+    - Met toutes les cases libres(0) et toutes les icônes à 🌊 (eau).
+    - Cette étape est cruciale pour éviter les conflits lors de la génération des créatures.
+
+- Étape 4 : Génération des créatures par ligne de profondeur
+    ```c
+    for (int y = 0; y < MAP_HEIGHT; y++) {...}
+    ```
+    Pour chaque ligne (y): 
+    - Récupère la profondeur avec `map_get_depth()`.
+    - Génère un groupe de créatures adaptées à cette profondeur avec `generate_group()`.
+    - Sélectionne des colonnes libres pour placer les créatures.
+    - Chaque créature est : 
+        - Marquée comme occupée dans `occupied[][]`.
+        - Son icône est placée dans `icons[][]`.
+        - Affichée avec ses stats détaillées.
+    Cette étape répartit les créatures sur la carte en fonction de la profondeur tout en respectant les probabilités et la dangerosité croissante avec la profondeur.
+
+- Étape 5 : Affichage de la carte graphique finale
+    ```c
+    print_icon_map(&carte);
+    ```
+    - Affiche la carte finale avec les icônes des créatures et l’eau.
+    - Permet de visualiser la répartition des créatures dans l’océan.
+
+
 ## Objectif
 
 Mettre en place un système de génération aléatoire de créatures marines selon la profondeur, avec évolution de leurs caractéristiques et répartition dans un tableau fixe.
@@ -95,4 +137,6 @@ pour éviter un malheureux "effet démo" le jour de la soutenance]
     •	Grille décalée à cause des emojis → ajustement de la largeur des cellules (col_width).
 	
     •	Emplacements non utilisés non gérés → réinitialisation complète du tableau avant génération.
+
+
 

@@ -20,7 +20,7 @@ void init_creature(CreatureMarine *creature, TypeCreature typeCreature, int prof
     static int next_id = 1;   // ID unique pour chaque créature
     creature->id = next_id++; // Assigne l'ID et incrémente pour la prochaine créature
 
-    int d = (profondeur < 500) ? profondeur : 500;
+    int d = (profondeur < 500) ? profondeur : 500; // borne à 500 m
     int k = d / 100; // palier 0..5
 
     if (typeCreature == TYPE_CREATURE_RANDOM)
@@ -218,10 +218,10 @@ int generate_group(CreatureMarine group[], int max, int profondeur)
     if (max <= 0) return 0;
     if (max > CREATURES_MAX) max = CREATURES_MAX;
 
-    // 🔹 Réinitialise les 'max' emplacements (slots vides)
+    // Réinitialise les 'max' emplacements (slots vides)
     for (int i = 0; i < max; i++) {
-        group[i].id = 0;
-        group[i].nom[0] = '\0';
+        group[i].id = 0; // ID 0 signifie non initialisée
+        group[i].nom[0] = '\0'; // chaîne vide car non initialisée 
         group[i].points_de_vie_max = 0;
         group[i].points_de_vie_actuels = 0;
         group[i].attaque_minimale = 0;

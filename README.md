@@ -122,7 +122,7 @@ git push origin --delete feature/nom-de-la-feature
 	•	main.c → affichage, répartition des créatures et carte graphique
 
 
-## Fonction importante 
+## Les Fonctions
 
 ### Fonction seed_rng_once()
 
@@ -130,3 +130,37 @@ Cette fonction initialise le générateur de nombres aléatoires une seule fois 
 Elle encapsule la commande standard srand(time(NULL)) et utilise une variable static pour éviter de réinitialiser le hasard à chaque appel.
 
  Objectif : garantir un vrai comportement aléatoire tout en gardant la cohérence du tirage.
+
+ ### Fonction clear_occupied_and_icons()
+
+Réinitialise la carte interne avant chaque génération :
+- toutes les cases sont remises à libres (0) et toutes les icônes à 🌊 (eau).
+- Le mot-clé static limite cette fonction et ses variables (occupied, icons) au fichier courant.
+
+### Fonction pick_free_columns_on_line()
+
+Rôle :
+Sélectionne aléatoirement les colonnes libres sur une ligne de la carte afin d’y placer des créatures, sans qu’elles se chevauchent (une par case maximum).
+
+Principe de fonctionnement :
+	1.	La fonction parcourt la ligne y pour repérer toutes les colonnes encore libres (occupied[y][x] == 0).
+	2.	Elle range ces colonnes dans un tableau temporaire colonnes_libres[].
+	3.	Ce tableau est mélangé aléatoirement avec l’algorithme de Fisher–Yates.
+	4.	Les want premières colonnes du tableau mélangé sont copiées dans xs[].
+	5.	La fonction renvoie combien de colonnes ont été sélectionnées.
+
+But :
+Garantir un placement aléatoire, sans doublon et sans dépasser le nombre de colonnes libres disponibles.
+
+Exemple de résultat :
+```c
+colonnes_libres avant mélange : [0, 1, 2, 3]
+après mélange : [2, 0, 3, 1]
+colonnes sélectionnées (pour 2 créatures) : [2, 0]
+```
+### Fonction print_icon_map()
+
+Rôle :
+Affiche la carte graphique finale en utilisant les icônes stockées dans icons[][].
+
+

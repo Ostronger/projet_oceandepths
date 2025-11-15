@@ -11,7 +11,7 @@ static int occupied[MAP_HEIGHT][MAP_WIDTH];
 static const char* icons[MAP_HEIGHT][MAP_WIDTH];
 
 
-// 🔹 Réinitialise la carte (tout libre, tout 🌊)
+// Réinitialise la carte (tout libre, tout eau)
 static void clear_occupied_and_icons(void)
 {
     for (int y = 0; y < MAP_HEIGHT; y++)
@@ -25,29 +25,36 @@ static void clear_occupied_and_icons(void)
 }
 
 
-// 🔹 Sélectionne des colonnes libres distinctes sur une ligne (shuffle aléatoire)
+// y = ligne actuelle
+// want = nb_colonnes_a_placer = combien de créatures on veut mettre sur cette ligne
+// xs = colonnes_selectionnees = résultat final
 static int pick_free_columns_on_line(int y, int want, int xs[])
 {
-    int free_cols[MAP_WIDTH];
-    int nfree = 0;
+    int free_cols[MAP_WIDTH]; // sert à stocker les colonnes libres
+    int nfree = 0; // nombre de colonnes libres trouvées
 
+    // Cherche les colonnes libres sur la ligne y
     for (int x = 0; x < MAP_WIDTH; x++)
     {
-        if (!occupied[y][x]) free_cols[nfree++] = x;
+        if (occupied[y][x] == 0) {
+            free_cols[nfree] = x;
+            nfree++;
+        }
     }
 
-    if (nfree == 0) return 0;
-    if (want > nfree) want = nfree;
+    if (nfree == 0) return 0; // aucune colonne libre sur cette ligne
+    if (want > nfree) want = nfree; 
 
-    // Mélange aléatoire (Fisher–Yates)
+    // Mélange aléatoire de fisher-yates
     for (int i = nfree - 1; i > 0; i--)
     {
-        int j = rand() % (i + 1);
-        int tmp = free_cols[i];
+        int j = rand() % (i + 1); // indice aléatoire entre 0 et i
+        int tmp = free_cols[i]; // échange free_cols[i] et free_cols[j]
         free_cols[i] = free_cols[j];
         free_cols[j] = tmp;
     }
 
+    // Copie les 'want' premières colonnes mélangées dans xs[]
     for (int i = 0; i < want; i++)
         xs[i] = free_cols[i];
 
@@ -55,14 +62,14 @@ static int pick_free_columns_on_line(int y, int want, int xs[])
 }
 
 
-// 🔹 Affiche la carte des profondeurs (texte brut)
+// Affiche la carte des profondeurs (texte brut)
 static void print_depth_map(const Map *carte)
 {
     map_print(carte);
 }
 
 
-// 🔹 Affiche la carte graphique finale (🌊 / 🐙 / 🦈)
+// Affiche la carte graphique finale (🌊 / 🐙 / 🦈)
 static void print_icon_map(const Map *carte)
 {
     printf("\n🌊=== CARTOGRAPHIE OCÉANIQUE ===🌊\n\n");
@@ -82,11 +89,16 @@ static void print_icon_map(const Map *carte)
     // Lignes avec contenu
     for (int y = 0; y < height; y++)
     {
-        int profondeur = map_get_depth(carte, 0, y);
-        printf("y=%-2d│", y);
+        int profondeur = map_get_depth(carte, 0, y); // profondeur de la ligne
+        printf("y=%-2d│", y); // numéro de ligne
 
-        for (int x = 0; x < width; x++)
-            printf(" %-4s │", icons[y][x]); // icône de la créature ou eau
+        for (int x = 0; x < width; x++) {
+            const char *symbole = icons[y][x];
+            if (strcmp(symbole, "🪼") == 0)
+                printf(" %-5s │", symbole); // largeur 5 au lieu de 4
+            else
+                printf(" %-4s │", symbole);
+    }
 
         printf(" %3dm\n", profondeur);
 
@@ -116,7 +128,7 @@ static void print_icon_map(const Map *carte)
 
 
 // =======================================================
-// 🧩 PROGRAMME PRINCIPAL
+// PROGRAMME PRINCIPAL
 // =======================================================
 int main(void)
 {
@@ -134,10 +146,10 @@ int main(void)
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         int profondeur = map_get_depth(&carte, 0, y);
-        CreatureMarine groupe[CREATURES_MAX];
+        CreatureMarine groupe[CREATURES_MAX]; 
 
         // Génère entre 1 et CREATURES_MAX créatures selon la profondeur
-        int nb = generate_group(groupe, CREATURES_MAX, profondeur);
+        int nb = generate_group(groupe, CREATURES_MAX, profondeur); // nb = nombre de créatures générées
 
         // Choisir des colonnes libres distinctes pour cette ligne
         int xs[CREATURES_MAX];
@@ -167,7 +179,7 @@ int main(void)
         printf("----------------------------------------------------\n");
     }
 
-    // 4️⃣ Afficher la carte graphique finale (vue d'ensemble)
+    // Afficher la carte graphique finale (vue d'ensemble)
     print_icon_map(&carte);
 
     return 0;
