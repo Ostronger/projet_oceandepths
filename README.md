@@ -6,11 +6,18 @@
 
 ## Préparation de l’environnement
 
-- **Windows / PowerShell** : avant toute exécution, forcez la console en UTF‑8 pour que les emojis et accents s’affichent correctement :
+- **Windows / PowerShell (recommandé)** : lancez `scripts\initialisation.bat`. Ce script :
+  1. Force automatiquement la console en UTF‑8 (accents/emojis lisibles).
+  2. Se place à la racine du projet.
+  3. Exécute `mingw32-make` via le `Makefile` puis démarre `projet_oceandepths`.
+  
+- **Alternative manuelle** (si vous ne pouvez pas exécuter les scripts) :
   1. `chcp 65001`
   2. `$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)`
+  3. `mingw32-make`
+  4. `.\projet_oceandepths`
 
-- **Compilation commune** :
+- **Compilation commune** (autres environnements) :
   ```bash
   gcc src/*.c -Iinclude -std=c11 -Wall -Wextra -g -finput-charset=UTF-8 -fexec-charset=UTF-8 -o projet_oceandepths
   ```
@@ -20,7 +27,7 @@
   ./projet_oceandepths
   ```
 
-- Un `Makefile.example` est fourni pour créer votre propre `Makefile` local (non versionné). Les utilisateurs Linux/macOS peuvent simplement faire `make run`.
+- Un `Makefile` est fourni (ainsi qu’un `scripts\initialisation.bat` pour Windows). Les utilisateurs Linux/macOS peuvent simplement faire `make run`.
 
 ## Arborescence
 

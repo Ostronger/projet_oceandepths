@@ -310,7 +310,7 @@ const char *creature_symbol(const CreatureMarine *c)
     {
         case KRAKEN:        return "\xF0\x9F\x90\x99";
         case REQUIN:        return "\xF0\x9F\xA6\x88";
-        case MEDUSE:        return "\xF0\x9F\xAA\xA8";
+        case MEDUSE:        return "\xF0\x9F\xAA\xBC";
         case POISSON_EPEE:  return "\xF0\x9F\x90\xA0";
         case CRABE_GEANT:   return "\xF0\x9F\xA6\x80";
         default:            return "\xF0\x9F\x90\xA1";

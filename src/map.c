@@ -10,7 +10,7 @@ static const char *emoji_creature(const CreatureMarine *c)
     switch (c->type)
     {
         case REQUIN:       return "\xF0\x9F\xA6\x88";
-        case MEDUSE:       return "\xF0\x9F\xAA\xA8";
+        case MEDUSE:       return "\xF0\x9F\xAA\xBC";
         case KRAKEN:       return "\xF0\x9F\x90\x99";
         case POISSON_EPEE: return "\xF0\x9F\x90\xA0";
         case CRABE_GEANT:  return "\xF0\x9F\xA6\x80";

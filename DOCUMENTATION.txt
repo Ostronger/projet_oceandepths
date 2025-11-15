@@ -55,7 +55,8 @@ Point d'entrée : initialisation du jeu, menu principal, navigation verticale, i
 
 ## Instructions rapides
 
-- Sous Windows/PowerShell, assurez-vous d’abord de forcer la console en UTF-8 (compatibilité emojis):
+- Sous Windows/PowerShell, lancez `scripts\initialisation.bat` : il force la console en UTF-8 puis exécute `mingw32-make` et démarre le jeu automatiquement.
+- Alternative manuelle si les scripts sont bloqués :
   1. `chcp 65001`
   2. `$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)`
 

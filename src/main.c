@@ -54,8 +54,8 @@ static void adoucir_creature(int ligne, int profondeur, CreatureMarine *c)
     if (!c) return;
     if (ligne <= 1 && (c->type == REQUIN || c->type == CRABE_GEANT || c->type == KRAKEN))
     {
-        TypeCreature remplaçant = (rand() % 2 == 0) ? MEDUSE : POISSON_EPEE;
-        init_creature(c, remplaçant, profondeur);
+        TypeCreature remplacant = (rand() % 2 == 0) ? MEDUSE : POISSON_EPEE;
+        init_creature(c, remplacant, profondeur);
     }
     else if (ligne == 2 && (c->type == CRABE_GEANT || c->type == KRAKEN))
     {
