@@ -25,26 +25,26 @@ static const char *COMPETENCE_NOMS[COMPETENCE_MAX] = {
     snprintf(buf, (size), __VA_ARGS__)
 #endif
 
-static int random_interval(int min, int max)
+static int random_interval(int min, int max) // génère un entier aléatoire entre min et max inclus
 {
     if (max < min) max = min;
     int amplitude = max - min;
     return min + (amplitude > 0 ? rand() % (amplitude + 1) : 0);
 }
 
-static int random_stress_oxygene(void)
+static int random_stress_oxygene(void) // génère un stress en oxygène aléatoire pour le joueur
 {
-    return random_interval(STRESS_OXYGENE_MIN, STRESS_OXYGENE_MAX);
+    return random_interval(STRESS_OXYGENE_MIN, STRESS_OXYGENE_MAX); // entre 1 et 2
 }
 
-static int creature_est_kraken(const CreatureMarine *c)
+static int creature_est_kraken(const CreatureMarine *c) // vérifie si la créature est un kraken
 {
-    return (c && strcmp(c->nom, "Kraken") == 0);
+    return (c && strcmp(c->nom, "Kraken") == 0); 
 }
 
-static int creature_est_meduse(const CreatureMarine *c)
+static int creature_est_meduse(const CreatureMarine *c) // vérifie si la créature est une méduse
 {
-    return (c && strcmp(c->nom, "Méduse") == 0);
+    return (c && strcmp(c->nom, "Méduse") == 0); 
 }
 
 static int creature_est_requin(const CreatureMarine *c)
@@ -62,7 +62,7 @@ static int creature_est_crabe(const CreatureMarine *c)
     return (c && strcmp(c->nom, "Crabe Géant") == 0);
 }
 
-static void joueur_subit_degats(Plongeur *plongeur, int degats)
+static void joueur_subit_degats(Plongeur *plongeur, int degats) // applique des dégâts au joueur
 {
     if (!plongeur || degats <= 0) return;
     plongeur->points_de_vie -= degats;
@@ -70,7 +70,7 @@ static void joueur_subit_degats(Plongeur *plongeur, int degats)
         plongeur->points_de_vie = 0;
 }
 
-static void combat_mettre_a_jour_statuts(Plongeur *plongeur)
+static void combat_mettre_a_jour_statuts(Plongeur *plongeur) // met à jour les statuts du joueur en début de tour
 {
     if (!plongeur) return;
 
@@ -82,7 +82,7 @@ static void combat_mettre_a_jour_statuts(Plongeur *plongeur)
     }
 }
 
-static const char *combat_icone_creature(const CreatureMarine *c)
+static const char *combat_icone_creature(const CreatureMarine *c) // retourne l'icône emoji représentant la créature
 {
     if (!c) return "❓";
     switch (c->type)

@@ -7,12 +7,12 @@
 ...
 ## progression réalisés
 
-## Étape 1 — Génération des créatures (résumé)
+### Étape 1 — Génération des créatures (résumé)
 
 ### Ce que fait le code
-- Initialise le **hasard une seule fois** (`seed_rng_once()`).
-- Crée une **créature** (`init_creature`) : `KRAKEN` ou `REQUIN` (ou **aléatoire** avec `TYPE_CREATURE_RANDOM`).
-- Affecte des **stats plausibles** (PV, ATK min/max, DEF, VIT), puis affiche le résultat dans `main.c`.
+- Initialise le hasard une seule fois (`seed_rng_once()`).
+- Crée une créature (`init_creature`) : `KRAKEN` ou `REQUIN` (ou **aléatoire** avec `TYPE_CREATURE_RANDOM`).
+- Affecte des stats plausibles** (PV, ATK min/max, DEF, VIT), puis affiche le résultat dans `main.c`.
 
 ### Fichiers
 - `include/creatures.h` : struct `CreatureMarine`, enum `TypeCreature`, prototypes.

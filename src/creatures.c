@@ -1,19 +1,22 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include "creatures.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-static int scale_value(int value, int percent, int minimum)
+
+// Permet de modifier les stats d'une créature sans toucher à la formule générale
+static int scale_value(int value, int percent, int minimum) 
 {
-    int scaled = (value * percent + 99) / 100;
-    if (scaled < minimum) scaled = minimum;
+    int scaled = (value * percent + 99) / 100; // arrondi vers haut
+    if (scaled < minimum) scaled = minimum; // garantie d'un minimum
     return scaled;
 }
 
+// rendre les créatures de surface plus douces
 static void adoucir_surface_creature(CreatureMarine *creature, int palier)
 {
-    if (!creature) return;
+    if (!creature) return; // si créature nulle, on sort
 
     if (palier == 0)
     {
@@ -39,7 +42,7 @@ static void adoucir_surface_creature(CreatureMarine *creature, int palier)
 
 void seed_rng_once(void) // Fonction pour initialiser le générateur de nombres aléatoires une seule fois
 {
-    static int initialized = 0;
+    static int initialized = 0; // variable statique pour suivre l'initialisation 
     if (!initialized)
     {
         srand((unsigned)time(NULL));
@@ -53,12 +56,12 @@ void init_creature(CreatureMarine *creature, TypeCreature typeCreature, int prof
     static int next_id = 1;   // ID unique pour chaque créature
     creature->id = next_id++; // Assigne l'ID et incrémente pour la prochaine créature
 
-    int d = (profondeur < 500) ? profondeur : 500;
+    int d = (profondeur < 500) ? profondeur : 500; // si profondeur >500m, on la traite comme 500m
     int k = d / 100; // palier 0..5
 
     if (typeCreature == TYPE_CREATURE_RANDOM)
     {
-        int r = rand() % 100;
+        int r = rand() % 100; // nombre aléatoire 0-99
 
         if (k == 0)
         {
@@ -76,11 +79,11 @@ void init_creature(CreatureMarine *creature, TypeCreature typeCreature, int prof
         else if (k == 2)
         {
             // 200-299 m : équilibre et rares boss
-            if (r < 35)      typeCreature = MEDUSE;
-            else if (r < 65) typeCreature = POISSON_EPEE;
-            else if (r < 85) typeCreature = REQUIN;
-            else if (r < 95) typeCreature = CRABE_GEANT;
-            else             typeCreature = KRAKEN;
+            if (r < 35)      typeCreature = MEDUSE;        // 35%
+            else if (r < 65) typeCreature = POISSON_EPEE;  // 30%
+            else if (r < 85) typeCreature = REQUIN;        // 20%
+            else if (r < 95) typeCreature = CRABE_GEANT;   // 10%
+            else             typeCreature = KRAKEN;        // 5%
         }
         else
         {
@@ -93,10 +96,10 @@ void init_creature(CreatureMarine *creature, TypeCreature typeCreature, int prof
         }
     }
 
-    creature->type = typeCreature;
+    creature->type = typeCreature; // assigne le type de créature choisi
 
     creature->niveau = k + 1;
-    creature->tours_pacifies = 0;
+    creature->tours_pacifies = 0; // pas pacifié au départ
 
     switch (typeCreature)
     {
@@ -246,6 +249,7 @@ int generate_group(CreatureMarine group[], int max, int profondeur)
     if (max > CREATURES_MAX) max = CREATURES_MAX;
 
     // Réinitialise les 'max' emplacements (slots vides)
+    // vide les données précédentes
     for (int i = 0; i < max; i++) {
         group[i].id = 0;
         group[i].nom[0] = '\0';
@@ -263,15 +267,18 @@ int generate_group(CreatureMarine group[], int max, int profondeur)
     int d = (profondeur < 500) ? profondeur : 500;
     int k = d / 100; // 0..5
 
-    // Intervalle [min_n..max_n] selon la profondeur
+    // Intervalle [min_n..max_n] de créatures à générer selon la profondeur
     int min_n = 1;
     int max_n;
     if (k <= 1)      max_n = (max >= 2) ? 2 : max;  // 1..2 en surface
     else if (k <= 3) max_n = (max >= 3) ? 3 : max;  // 2..3 au milieu
     else             max_n = max;                   // 3..max en profondeur
 
-    if (min_n > max_n) min_n = max_n;
 
+    if (min_n > max_n) min_n = max_n; // sécurité si min > max 
+
+    // nombre aléatoire entre min_n et max_n
+    // exemple : min=2, max=4 -> peut être 2, 3 ou 4
     int nombre_creatures = min_n + (max_n > min_n ? rand() % (max_n - min_n + 1) : 0);
 
     // Génération des 'nombre_creatures' premières cases
@@ -285,34 +292,34 @@ void print_creature(const CreatureMarine *creature)
 {
     const char *symbole = creature_symbol(creature);
 
-    printf("%s [Niv %d] %-13s | PV: %3d | ATK: %2d-%2d | DEF: %2d | VIT: %2d | Effet: %-10s | %s\n",
-           symbole, creature->id, creature->nom,
+    printf("%s [niv: %d] %-13s | 💙 PV: %3d | ⚔️ ATK: %2d-%2d | 🛡️ DEF: %2d | 💨 VIT: %2d | ✨ Effet: %-10s | %s\n",
+           symbole, creature->niveau, creature->nom,
            creature->points_de_vie_max,
            creature->attaque_minimale, creature->attaque_maximale,
            creature->defense, creature->vitesse,
            creature->effet_special,
-           creature->est_vivant ? "Vivant" : "Mort");
+           creature->est_vivant ? "🟢 Vivant" : "🔴 Mort");
 }
 
 void print_group(const CreatureMarine group[], int count)
 {
-    printf("Groupe de %d créature(s) générée(s) :\n", count);
-    printf("----------------------------------------------------\n");
-    for (int i = 0; i < count; i++)
+    printf("\n============ Groupe de %d créature(s) ============\n", count);
+    for (int i = 0; i < count; i++) {
         print_creature(&group[i]);
-    printf("----------------------------------------------------\n");
+    }
+    printf("===================================================\n");
 }
 
 const char *creature_symbol(const CreatureMarine *c)
 {
-    if (!c) return "\xF0\x9F\x90\xA1";
+    if (!c) return "\xF0\x9F\x90\xA1"; // symbole par défaut 
     switch (c->type)
     {
-        case KRAKEN:        return "\xF0\x9F\x90\x99";
-        case REQUIN:        return "\xF0\x9F\xA6\x88";
-        case MEDUSE:        return "\xF0\x9F\xAA\xBC";
-        case POISSON_EPEE:  return "\xF0\x9F\x90\xA0";
-        case CRABE_GEANT:   return "\xF0\x9F\xA6\x80";
-        default:            return "\xF0\x9F\x90\xA1";
+        case KRAKEN:        return "\xF0\x9F\x90\x99"; // emojis : 🐙
+        case REQUIN:        return "\xF0\x9F\xA6\x88"; // 🦈
+        case MEDUSE:        return "\xF0\x9F\xAA\xBC"; // 🪼
+        case POISSON_EPEE:  return "\xF0\x9F\x90\xA0"; // 🐠
+        case CRABE_GEANT:   return "\xF0\x9F\xA6\x80"; // 🦀
+        default:            return "\xF0\x9F\x90\xA1"; // 🐡
     }
 }

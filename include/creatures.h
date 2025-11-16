@@ -1,7 +1,7 @@
-﻿#ifndef CREATURES_H      // emp�che d'inclure deux fois le fichier
+﻿#ifndef CREATURES_H      // empêche d'inclure deux fois le fichier
 #define CREATURES_H
 
-#define CREATURES_MAX 4 // nombre maximum de cr�taure g�n�r�es en m^me temps
+#define CREATURES_MAX 4 // nombre maximum de créature générées en même temps
 
 typedef enum {
     KRAKEN,
@@ -9,8 +9,8 @@ typedef enum {
     MEDUSE,
     POISSON_EPEE,
     CRABE_GEANT,
-    TYPE_CREATURE_RANDOM = -1 // pour choisir al�atoirement le type de cr�ature
-} TypeCreature; // types de cr�atures possibles
+    TYPE_CREATURE_RANDOM = -1 // pour choisir aléatoirement le type de créature
+} TypeCreature; // types de créatures possibles
 
 typedef struct {
     int id;

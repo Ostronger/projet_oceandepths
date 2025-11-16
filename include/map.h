@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "creatures.h"
 
-#define MAP_WIDTH (1 + CREATURES_MAX)
+#define MAP_WIDTH (1 + CREATURES_MAX) // largeur de la carte en cellules (1 colonne pour le plongeur + CREATURES_MAX colonnes pour les créatures)
 #define MAP_HEIGHT 6
 #define MAX_DEPTH 500 // profondeur maximale de la carte
 
