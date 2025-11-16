@@ -105,7 +105,7 @@ void distribuer_recompenses(Plongeur *plongeur,
                             Inventaire *inventaire,
                             const CreatureMarine *groupe,
                             int nb_creatures,
-                            int profondeur)
+                            int profondeur) // distribue les récompenses après un combat
 {
     if (!plongeur || !inventaire || !groupe || nb_creatures <= 0)
         return;

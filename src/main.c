@@ -12,7 +12,7 @@
 
 #define SAVE_FILE "saves/partie.save"
 
-static void preparer_boss_final(CreatureMarine *boss, int profondeur);
+static void preparer_boss_final(CreatureMarine *boss, int profondeur); // prépare le boss final (Kraken amélioré)
 
 static CreatureMarine groupes_zones[MAP_HEIGHT][CREATURES_MAX];
 static int groupes_counts[MAP_HEIGHT];
@@ -25,7 +25,7 @@ static void afficher_carte(const Map *carte, int ligne_plongeur)
     map_print(carte, ligne_plongeur, groupes_zones, groupes_counts, groupes_inities, progression_positions);
 }
 
-static int groupe_compte_vivants(const CreatureMarine *groupe, int nb)
+static int groupe_compte_vivants(const CreatureMarine *groupe, int nb) // compte le nombre de créatures vivantes dans un groupe
 {
     int vivants = 0;
     for (int i = 0; i < nb; i++)
@@ -36,7 +36,7 @@ static int groupe_compte_vivants(const CreatureMarine *groupe, int nb)
     return vivants;
 }
 
-static void groupe_reinitialise(int ligne)
+static void groupe_reinitialise(int ligne) // réinitialise un groupe de créatures à une ligne donnée
 {
     if (ligne < 0 || ligne >= MAP_HEIGHT) return;
     groupes_counts[ligne] = 0;
@@ -49,7 +49,7 @@ static void groupe_reinitialise(int ligne)
     }
 }
 
-static void adoucir_creature(int ligne, int profondeur, CreatureMarine *c)
+static void adoucir_creature(int ligne, int profondeur, CreatureMarine *c) // adoucit une créature trop dangereuse pour la ligne
 {
     if (!c) return;
     if (ligne <= 1 && (c->type == REQUIN || c->type == CRABE_GEANT || c->type == KRAKEN))
@@ -63,7 +63,7 @@ static void adoucir_creature(int ligne, int profondeur, CreatureMarine *c)
     }
 }
 
-static void initialiser_ligne(const Map *carte, int ligne)
+static void initialiser_ligne(const Map *carte, int ligne) // initialise les créatures d'une ligne donnée
 {
     int profondeur = map_get_depth(carte, 0, ligne);
     if (ligne == MAP_HEIGHT - 1)
@@ -75,7 +75,7 @@ static void initialiser_ligne(const Map *carte, int ligne)
         return;
     }
 
-    int nb = generate_group(groupes_zones[ligne], CREATURES_MAX, profondeur);
+    int nb = generate_group(groupes_zones[ligne], CREATURES_MAX, profondeur); // génère un groupe de créatures
     for (int i = 0; i < nb; i++)
         adoucir_creature(ligne, profondeur, &groupes_zones[ligne][i]);
 
@@ -84,14 +84,14 @@ static void initialiser_ligne(const Map *carte, int ligne)
     progression_positions[ligne] = -1;
 }
 
-static void initialiser_groupes(const Map *carte)
+static void initialiser_groupes(const Map *carte) // initialise les groupes de créatures pour toutes les lignes
 {
     for (int ligne = 0; ligne < MAP_HEIGHT; ligne++)
         initialiser_ligne(carte, ligne);
     progression_positions[0] = 0;
 }
 
-static void reinitialiser_partie(Plongeur *plongeur, Inventaire *inventaire)
+static void reinitialiser_partie(Plongeur *plongeur, Inventaire *inventaire) // réinitialise une nouvelle partie
 {
     joueur_init(plongeur);
     inventaire_init(inventaire, plongeur);
@@ -105,7 +105,7 @@ static void reinitialiser_partie(Plongeur *plongeur, Inventaire *inventaire)
 static int demander_chargement(Plongeur *plongeur,
                                Inventaire *inventaire,
                                int *ligne,
-                               int zones[])
+                               int zones[]) // demande au joueur s'il veut charger une partie sauvegardée
 {
     OptionMenu menu[] = {
         {"Commencer une nouvelle expédition"},
@@ -135,14 +135,14 @@ static int demander_chargement(Plongeur *plongeur,
     return 0;
 }
 
-static TypeCombinaison combinaison_minimale(int profondeur)
+static TypeCombinaison combinaison_minimale(int profondeur) // retourne la combinaison minimale requise pour une profondeur donnée
 {
     if (profondeur >= 400) return COMBI_TITANIUM;
     if (profondeur >= 200) return COMBI_RENFORCEE;
     return COMBI_NEOPRENE;
 }
 
-static void preparer_boss_final(CreatureMarine *boss, int profondeur)
+static void preparer_boss_final(CreatureMarine *boss, int profondeur) // prépare le boss final (Kraken amélioré)
 {
     if (!boss) return;
     init_creature(boss, KRAKEN, profondeur);
@@ -159,7 +159,7 @@ static void preparer_boss_final(CreatureMarine *boss, int profondeur)
     boss->effet_special[sizeof(boss->effet_special) - 1] = '\0';
 }
 
-static void retour_surface(Plongeur *plongeur, int *ligne)
+static void retour_surface(Plongeur *plongeur, int *ligne) // fait remonter le joueur à la surface et restaure ses PV/O2/fatigue
 {
     if (!plongeur || !ligne) return;
     *ligne = 0;
@@ -170,7 +170,7 @@ static void retour_surface(Plongeur *plongeur, int *ligne)
     printf("Repos complet : PV/O₂/fatigue restaurés.\n");
 }
 
-static void boutique_surface(Plongeur *plongeur, Inventaire *inventaire)
+static void boutique_surface(Plongeur *plongeur, Inventaire *inventaire) // menu de la boutique à la surface
 {
     if (!plongeur || !inventaire) return;
 
@@ -278,7 +278,7 @@ static void boutique_surface(Plongeur *plongeur, Inventaire *inventaire)
     }
 }
 
-static void menu_surface_global(Plongeur *plongeur, Inventaire *inventaire, int *ligne_actuelle)
+static void menu_surface_global(Plongeur *plongeur, Inventaire *inventaire, int *ligne_actuelle) // menu des actions disponibles à la surface
 {
     int menu = 1;
     while (menu)
@@ -325,7 +325,7 @@ static void menu_surface_global(Plongeur *plongeur, Inventaire *inventaire, int 
     }
 }
 
-static void menu_inventaire_loop(Inventaire *inventaire, Plongeur *plongeur)
+static void menu_inventaire_loop(Inventaire *inventaire, Plongeur *plongeur) // boucle de gestion de l'inventaire
 {
     int boucle = 1;
     while (boucle)
@@ -386,7 +386,7 @@ static void menu_inventaire_loop(Inventaire *inventaire, Plongeur *plongeur)
     }
 }
 
-static int explorer_zone(Plongeur *plongeur, Inventaire *inventaire, const Map *carte, int ligne)
+static int explorer_zone(Plongeur *plongeur, Inventaire *inventaire, const Map *carte, int ligne) // explore une zone à une ligne donnée
 {
     if (!plongeur || !inventaire || !carte) return 1;
     if (ligne < 0 || ligne >= MAP_HEIGHT) return 1;
@@ -458,7 +458,7 @@ static int explorer_zone(Plongeur *plongeur, Inventaire *inventaire, const Map *
     return 2;
 }
 
-static void deplacement_ligne(const Map *carte, int *ligne, Plongeur *plongeur, const Inventaire *inventaire)
+static void deplacement_ligne(const Map *carte, int *ligne, Plongeur *plongeur, const Inventaire *inventaire) // gère le déplacement vertical du plongeur
 {
     if (!carte || !ligne || !plongeur || !inventaire) return;
 

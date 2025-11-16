@@ -5,14 +5,14 @@
 #include <string.h>
 #include <ctype.h>
 
-static int clamp(int value, int min, int max)
+static int clamp(int value, int min, int max) // borne une valeur entre min et max
 {
     if (value < min) return min;
     if (value > max) return max;
     return value;
 }
 
-void ui_barre(const char *label, int valeur, int maximum, int largeur)
+void ui_barre(const char *label, int valeur, int maximum, int largeur) // affiche une barre de progression dans la console
 {
     if (maximum <= 0) maximum = 1;
     if (largeur <= 0) largeur = 30;
@@ -27,7 +27,7 @@ void ui_barre(const char *label, int valeur, int maximum, int largeur)
     printf("] %d/%d\n", valeur, maximum);
 }
 
-void ui_affiche_etat(const Plongeur *plongeur)
+void ui_affiche_etat(const Plongeur *plongeur) // affiche l'état du plongeur (vie, oxygène, fatigue, etc.)
 {
     if (!plongeur) return;
 
@@ -48,7 +48,7 @@ void ui_affiche_etat(const Plongeur *plongeur)
     printf("===========================\n");
 }
 
-void ui_menu_actions(const char *titre, const OptionMenu *options, int count)
+void ui_menu_actions(const char *titre, const OptionMenu *options, int count) // affiche un menu d'options dans la console
 {
     if (titre)
         printf("\n%s\n", titre);
@@ -60,7 +60,7 @@ void ui_menu_actions(const char *titre, const OptionMenu *options, int count)
     }
 }
 
-static char *trim(char *str)
+static char *trim(char *str) // supprime les espaces en début et fin de chaîne
 {
     if (!str) return str;
     char *end;
@@ -72,7 +72,7 @@ static char *trim(char *str)
     return str;
 }
 
-int ui_lire_choix(int min, int max)
+int ui_lire_choix(int min, int max) // lit un choix numérique de l'utilisateur entre min et max
 {
     if (min > max)
     {

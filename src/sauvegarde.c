@@ -7,7 +7,7 @@
 #define SAVE_SIGNATURE_V2 "OCEANDEPTHS_SAVE_V2"
 #define SAVE_SIGNATURE_V3 "OCEANDEPTHS_SAVE_V3"
 
-static void trim_newline(char *s)
+static void trim_newline(char *s) // supprime les retours à la ligne en fin de chaîne
 {
     if (!s) return;
     size_t len = strlen(s);
@@ -23,7 +23,7 @@ int sauvegarder_partie(const char *chemin,
                        const Inventaire *inventaire,
                        int ligne_actuelle,
                        const int zones_securisees[],
-                       int nb_zones)
+                       int nb_zones) // sauvegarde la partie dans un fichier
 {
     if (!chemin || !plongeur || !inventaire)
         return 0;
@@ -62,7 +62,7 @@ int sauvegarder_partie(const char *chemin,
     }
     fprintf(f, "\n");
 
-    if (zones_securisees && nb_zones > 0)
+    if (zones_securisees && nb_zones > 0) // sauvegarde des zones sécurisées
     {
         fprintf(f, "ZONES:%d", nb_zones);
         for (int i = 0; i < nb_zones; i++)
@@ -77,13 +77,13 @@ int sauvegarder_partie(const char *chemin,
     return 1;
 }
 
-static int lire_entier(const char *token)
+static int lire_entier(const char *token) // lit un entier depuis une chaîne de caractères
 {
     if (!token) return 0;
     return (int)strtol(token, NULL, 10);
 }
 
-static void vider_slots(Inventaire *inventaire)
+static void vider_slots(Inventaire *inventaire) // vide tous les slots de l'inventaire
 {
     if (!inventaire) return;
     for (int i = 0; i < INVENTAIRE_TAILLE; i++)
@@ -98,7 +98,7 @@ int charger_partie(const char *chemin,
                    Inventaire *inventaire,
                    int *ligne_actuelle,
                    int zones_securisees[],
-                   int nb_zones)
+                   int nb_zones) // charge la partie depuis un fichier
 {
     if (!chemin || !plongeur || !inventaire || !ligne_actuelle)
         return 0;

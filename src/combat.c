@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "creatures.h"
 
 #define STRESS_OXYGENE_MIN 1
 #define STRESS_OXYGENE_MAX 2
@@ -82,20 +83,6 @@ static void combat_mettre_a_jour_statuts(Plongeur *plongeur) // met à jour les 
     }
 }
 
-static const char *combat_icone_creature(const CreatureMarine *c) // retourne l'icône emoji représentant la créature
-{
-    if (!c) return "❓";
-    switch (c->type)
-    {
-        case REQUIN: return "🦈";
-        case MEDUSE: return "🪼";
-        case KRAKEN: return "🐙";
-        case POISSON_EPEE: return "🐠";
-        case CRABE_GEANT: return "🦀";
-        default: return "🐡";
-    }
-}
-
 static const char *combat_nom_harpon(const Inventaire *inventaire)
 {
     if (!inventaire) return "harpon";
@@ -133,7 +120,7 @@ static void combat_affiche_resume_joueur(const Plongeur *plongeur,
     combat_bloc_ligne("");
     OD_SNPRINTF(buffer, sizeof(buffer), "    PLONGEUR              VS              %s", cible->nom);
     combat_bloc_ligne(buffer);
-    OD_SNPRINTF(buffer, sizeof(buffer), "       🤿                            %s", combat_icone_creature(cible));
+    OD_SNPRINTF(buffer, sizeof(buffer), "       🤿                            %s", creature_symbol(cible));
     combat_bloc_ligne(buffer);
     combat_bloc_ligne("");
     OD_SNPRINTF(buffer, sizeof(buffer), "Dégâts infligés : %d PV (O₂ -%d)", degats, cout_oxygene);
@@ -160,7 +147,7 @@ static void combat_affiche_resume_creature(const CreatureMarine *attaquant,
     combat_bloc_ligne("");
     OD_SNPRINTF(buffer, sizeof(buffer), "    PLONGEUR              VS              %s", attaquant->nom);
     combat_bloc_ligne(buffer);
-    OD_SNPRINTF(buffer, sizeof(buffer), "       🤿                            %s", combat_icone_creature(attaquant));
+    OD_SNPRINTF(buffer, sizeof(buffer), "       🤿                            %s", creature_symbol(attaquant));
     combat_bloc_ligne(buffer);
     combat_bloc_ligne("");
     OD_SNPRINTF(buffer, sizeof(buffer), "Vous perdez %d PV (stress O₂ -%d)", degats, stress);

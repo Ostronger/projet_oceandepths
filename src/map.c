@@ -44,7 +44,7 @@ int map_get_depth(const Map *map, int x, int y)
     return d;
 }
 
-void map_print(const Map *map, int ligne_plongeur, CreatureMarine groupes[][CREATURES_MAX], const int groupes_counts[], const int groupes_inities[], const int progression_positions[])
+void map_print(const Map *map, int ligne_plongeur, CreatureMarine groupes[][CREATURES_MAX], const int groupes_counts[], const int groupes_inities[], const int progression_positions[]) // affiche la carte en situant le plongeur et les créatures
 {
     (void)groupes_inities;
 
